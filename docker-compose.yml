@@ -1,0 +1,37 @@
+version: '3'
+services:
+    web:
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: phpmyadmin
+        ports:
+            - 8080:80
+        links:
+            - mysql
+        environment:
+            MYSQL_USER: "root"
+            MYSQL_PASSWORD: "1q2w3e4r"
+            MYSQL_ROOT_PASSWORD: "1q2w3e4r"
+            PMA_HOST: mysql
+    redis:
+        container_name: redis
+        # 指定镜像
+        image: redis:latest
+        ports:
+            - 6379:6379
+        volumes:
+            - "/data/lnmp/redis/data:/data"
+        command:
+            redis-server
+    mysql:
+        container_name: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: "1q2w3e4r"
+            MYSQL_USER: 'root'
+            MYSQL_PASS: '1q2w3e4r'
+        image: "docker.io/mysql:latest"
+        restart: always
+        volumes:
+            - "/data/lnmp/mysql/data:/var/lib/mysql"
+        ports:
+            - 3306:3306
