@@ -1,18 +1,26 @@
 version: '3'
 services:
-    web:
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin:latest
-        container_name: phpmyadmin
+    nginx:
+        image: nginx:stable
+        container_name: nginx
         ports:
-            - 8080:80
+            - 80:80
+        volumes:
+          - ./nginx/logs:/var/log/nginx/
+          - ./nginx/conf.d:/etc/nginx/conf.d
+          - ./www:/www
         links:
-            - mysql
-        environment:
-            MYSQL_USER: "root"
-            MYSQL_PASSWORD: "1q2w3e4r"
-            MYSQL_ROOT_PASSWORD: "1q2w3e4r"
-            PMA_HOST: mysql
+          - php
+    php:
+        container_name: php
+        build: dockerfile/php
+        ports:
+            - 9000:9000
+        volumes:
+          - ./php/conf.d:/usr/local/etc/php/conf.d
+          - ./www:/www
+        links:
+            - redis
     redis:
         container_name: redis
         # 指定镜像
@@ -20,18 +28,30 @@ services:
         ports:
             - 6379:6379
         volumes:
-            - "/data/lnmp/redis/data:/data"
+            - ./data/redis:/data
         command:
             redis-server
-    mysql:
-        container_name: mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: "1q2w3e4r"
-            MYSQL_USER: 'root'
-            MYSQL_PASS: '1q2w3e4r'
-        image: "docker.io/mysql:latest"
-        restart: always
-        volumes:
-            - "/data/lnmp/mysql/data:/var/lib/mysql"
-        ports:
-            - 3306:3306
+#    mysql:
+#        container_name: mysql
+#        environment:
+#            MYSQL_ROOT_PASSWORD: "1q2w3e4r"
+#            MYSQL_USER: 'root'
+#            MYSQL_PASS: '1q2w3e4r'
+#        image: "docker.io/mysql:latest"
+#        restart: always
+#        volumes:
+#            - "/data/lnmp/mysql/data:/var/lib/mysql"
+#        ports:
+#            - 3306:3306
+#    phpmyadmin:
+#        image: phpmyadmin/phpmyadmin:latest
+#        container_name: phpmyadmin
+#        ports:
+#            - 8080:80
+#        links:
+#            - mysql
+#        environment:
+#            MYSQL_USER: "root"
+#            MYSQL_PASSWORD: "1q2w3e4r"
+#            MYSQL_ROOT_PASSWORD: "1q2w3e4r"
+#            PMA_HOST: mysql
