@@ -13,7 +13,7 @@ services:
           - php
     php:
         container_name: php
-        build: dockerfile/php
+        build: build/php
         ports:
             - 9000:9000
         volumes:
