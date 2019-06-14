@@ -10,6 +10,7 @@ libicu-dev libc-client-dev libkrb5-dev \
 && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu \
 && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
 && docker-php-ext-install -j$(nproc) bz2 gd soap wddx xmlrpc tidy xsl zip snmp ldap intl \
-bcmath calendar exif gettext sockets dba mysqli pcntl pdo_mysql shmop sysvmsg sysvsem sysvshm imap
+bcmath calendar exif gettext sockets dba mysqli pcntl pdo_mysql shmop sysvmsg sysvsem sysvshm imap \
+&& pecl install redis swoole
 
 
