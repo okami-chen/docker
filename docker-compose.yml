@@ -4,11 +4,11 @@ services:
         image: nginx:stable
         container_name: nginx
         ports:
-            - 10080:80
+            - 80:80
         volumes:
           - ./nginx/logs:/var/log/nginx/
           - ./nginx/conf.d:/etc/nginx/conf.d
-          - ./www:/www
+          - /data/www:/www
         links:
           - php
     php:
@@ -18,7 +18,7 @@ services:
 #            - 19000:9000
         volumes:
           - ./php/conf.d:/usr/local/etc/php/conf.d
-          - ./www:/www
+          - /data/www:/www
         links:
             - redis
     redis:
@@ -26,9 +26,9 @@ services:
         # 指定镜像
         image: redis:latest
         ports:
-            - 16379:6379
+            - 6379:6379
         volumes:
-            - ./data/redis/data:/data
+            - /data/lnmp/redis/data:/data
         command:
             redis-server
     mysql:
@@ -40,6 +40,18 @@ services:
         image: mysql:5.7
         restart: always
         volumes:
-            - ./data/mysql/data:/var/lib/mysql
+            - /data/lnmp/mysql/data:/var/lib/mysql
         ports:
-            - 13306:3306
+            - 3306:3306
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: phpmyadmin
+        ports:
+            - 8080:80
+        links:
+            - mysql
+        environment:
+            MYSQL_USER: "root"
+            MYSQL_PASSWORD: "1q2w3e4r"
+            MYSQL_ROOT_PASSWORD: "1q2w3e4r"
+            PMA_HOST: mysql
