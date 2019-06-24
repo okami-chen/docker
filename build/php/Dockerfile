@@ -12,6 +12,7 @@ libicu-dev libc-client-dev libkrb5-dev wget vim\
 && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
 && docker-php-ext-install -j$(nproc) bz2 gd soap wddx xmlrpc tidy xsl zip snmp ldap intl \
 bcmath calendar exif gettext sockets dba mysqli pcntl pdo_mysql shmop sysvmsg sysvsem sysvshm imap \
-&& pecl install redis swoole
+&& pecl install redis swoole \
+&& composer config -g repo.packagist composer https://packagist.laravel-china.org
 
 
