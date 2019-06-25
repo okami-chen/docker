@@ -1,6 +1,6 @@
 FROM centos
 
-RUN groupadd www-data && useradd -M -g nginx -s /sbin/nologin www-data \
+RUN groupadd www-data && useradd -M -g www-data -s /sbin/nologin www-data \
 && rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum update -y \
 && yum install wget libxml2 libxml2-devel openssl openssl-devel bzip2 bzip2-devel libcurl libcurl-devel libjpeg \
 libjpeg-devel libpng libpng-devel freetype freetype-devel gmp gmp-devel readline readline-devel libxslt libxslt-devel \
