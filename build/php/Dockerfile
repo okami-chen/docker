@@ -1,18 +1,72 @@
-FROM php:7.3-fpm
+FROM centos
 
-RUN apt-get update && \
-apt-get install -y --no-install-recommends libbz2-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
-libxml2-dev libtidy-dev libxslt1-dev libzip-dev libsnmp-dev libldap2-dev libc-client-dev libkrb5-dev \
-libicu-dev libc-client-dev libkrb5-dev wget vim git snmp-mibs-downloader \
-&& wget https://getcomposer.org/composer.phar \
-&& mv composer.phar /usr/local/bin/composer && chmod +x /usr/local/bin/composer \
-&& rm -r /var/lib/apt/lists/* \
-&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu \
-&& docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-&& docker-php-ext-install -j$(nproc) bz2 gd soap wddx xmlrpc tidy xsl zip snmp ldap intl \
-bcmath calendar exif gettext sockets dba mysqli pcntl pdo_mysql shmop sysvmsg sysvsem sysvshm imap \
-&& pecl install redis swoole \
-&& composer config -g repo.packagist composer https://packagist.laravel-china.org
-
-
+RUN groupadd www-data && useradd -M -g nginx -s /sbin/nologin www-data \
+&& rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum update -y \
+&& yum install wget libxml2 libxml2-devel openssl openssl-devel bzip2 bzip2-devel libcurl libcurl-devel libjpeg \
+libjpeg-devel libpng libpng-devel freetype freetype-devel gmp gmp-devel readline readline-devel libxslt libxslt-devel \
+autoconf gcc bison re2c sqlite-devel libffi-devel icu-devel libicu.x86_64 libicu-devel.x86_64 libicu-doc.noarch \
+gcc-c++ oniguruma-devel.x86_64 oniguruma.x86_64 -y \
+&& mkdir /soft && cd /soft && wget https://github.com/php/php-src/archive/php-7.4.0alpha1.tar.gz \
+&& tar xvf  php-7.4.0alpha1.tar.gz && rm -rf php-7.4.0alpha1.tar.gz && cd php-src-php-7.4.0alpha1 \
+&& ./buildconf --force \
+&& ./configure \
+--prefix=/usr/local/php \
+--with-config-file-path=/usr/local/php/etc \
+--enable-fpm \
+--with-fpm-user=www-data \
+--with-fpm-group=www-data \
+--enable-inline-optimization \
+--disable-debug \
+--disable-rpath \
+--enable-shared \
+--enable-soap \
+--with-xmlrpc \
+--with-openssl \
+--with-mhash \
+--with-zlib \
+--enable-bcmath \
+--with-iconv \
+--with-bz2 \
+--enable-calendar \
+--with-curl \
+--with-cdb \
+--enable-dom \
+--enable-exif \
+--enable-fileinfo \
+--enable-filter \
+--enable-ftp \
+--with-openssl-dir \
+--enable-gd-jis-conv \
+--with-gettext \
+--with-gmp \
+--with-mhash \
+--enable-json \
+--enable-mbstring \
+--enable-mbregex \
+--enable-pdo \
+--with-mysqli=mysqlnd \
+--with-pdo-mysql=mysqlnd \
+--with-zlib-dir \
+--with-readline \
+--enable-session \
+--enable-shmop \
+--enable-simplexml \
+--enable-sockets \
+--enable-sysvmsg \
+--enable-sysvsem \
+--enable-sysvshm \
+--with-xsl \
+--enable-mysqlnd-compression-support \
+--enable-opcache \
+--enable-pcntl \
+--enable-intl \
+--with-ffi \
+--enable-exif \
+&& make && make install \
+&& ln -s /usr/local/php/bin/php-config /usr/bin/php-config \
+&& ln -s /usr/local/php/bin/phpize /usr/bin/phpize \
+&& ln -s /usr/local/php/bin/php /usr/bin/php \
+&& wget https://dl.laravel-china.org/composer.phar -O /usr/local/bin/composer \
+&& chmod a+x /usr/local/bin/composer \
+&& composer config -g repo.packagist composer https://packagist.laravel-china.org \
+&& yum clean all && rm -rf /tmp/* && rm -rf /soft
