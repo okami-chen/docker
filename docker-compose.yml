@@ -1,8 +1,10 @@
 version: '3'
 services:
     nginx:
-        image: nginx:stable
+
         container_name: nginx
+        image: nginx:stable
+        restart: always
         ports:
             - 80:80
         volumes:
@@ -12,19 +14,25 @@ services:
         links:
           - php
     php:
+
         container_name: php
         build: build/php
-#        ports:
-#            - 19000:9000
+        restart: always
+
+        ports:
+            - 9000:9000
+            - 9501:9501
         volumes:
           - ./php/conf.d:/usr/local/etc/php/conf.d
           - /data/www:/www
+          - ./shell:/opt/bin
         links:
             - redis
     redis:
         container_name: redis
         # 指定镜像
         image: redis:latest
+        restart: always
         ports:
             - 6379:6379
         volumes:
@@ -33,12 +41,12 @@ services:
             redis-server
     mysql:
         container_name: mysql
+        image: mysql:5.7
+        restart: always
         environment:
             MYSQL_ROOT_PASSWORD: "1q2w3e4r"
             MYSQL_USER: 'root'
             MYSQL_PASS: '1q2w3e4r'
-        image: mysql:5.7
-        restart: always
         volumes:
             - /data/lnmp/mysql/data:/var/lib/mysql
         ports:
@@ -46,6 +54,7 @@ services:
     phpmyadmin:
         image: phpmyadmin/phpmyadmin:latest
         container_name: phpmyadmin
+        restart: always
         ports:
             - 8080:80
         links:
