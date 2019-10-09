@@ -1,4 +1,4 @@
-FROM centos
+FROM php:7.3-fpm
 
 RUN groupadd www-data && useradd -M -g www-data -s /sbin/nologin www-data \
 && rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum update -y \
@@ -70,3 +70,4 @@ gcc-c++ oniguruma-devel.x86_64 oniguruma.x86_64 -y \
 && chmod a+x /usr/local/bin/composer \
 && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
 && yum clean all && rm -rf /tmp/* && rm -rf /soft
+
