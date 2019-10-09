@@ -6,7 +6,7 @@ services:
         image: nginx:stable
         restart: always
         ports:
-            - 8080:80
+            - 80:80
         volumes:
           - ./nginx/logs:/var/log/nginx/
           - ./nginx/conf.d:/etc/nginx/conf.d
@@ -24,8 +24,9 @@ services:
           - /data/www:/www
           - ./php/conf.d/php.ini:/usr/local/etc/php/php.ini
           - ./php/conf.d/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
+          - ./php/run.sh:/opt/run.sh
 #          - ./php/start.sh:/opt/start.sh
-        command: /opt/run.sh
+#        command: /opt/run.sh
         links:
             - redis
     redis:
@@ -49,8 +50,8 @@ services:
             MYSQL_PASS: '1q2w3e4r'
         volumes:
             - /data/lnmp/mysql/data:/var/lib/mysql
-#        ports:
-#            - 83306:3306
+        ports:
+            - 3306:3306
     phpmyadmin:
         image: phpmyadmin/phpmyadmin:latest
         container_name: phpmyadmin
