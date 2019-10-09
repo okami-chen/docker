@@ -6,3 +6,4 @@ docker rmi $(docker images -q -f dangling=true)
 docker-compose build
 docker-compose down
 docker-compose up -d
+docker ps -a
