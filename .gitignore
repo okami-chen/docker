@@ -2,3 +2,5 @@
 .gitee/
 data/
 ningx/logs/*
+nginx/logs/access.log
+nginx/logs/error.log
