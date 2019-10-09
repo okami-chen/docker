@@ -10,7 +10,7 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
         libxslt1-dev libbz2-dev bison libffi-dev libzip-dev re2c apt-utils \
         libgtk2.0-dev cmake git unzip \
         supervisor \
-    && docker-php-ext-install -j$(nproc) pdo mysqli pdo_mysql \
+    && docker-php-ext-install -j$(nproc) mysqli pdo_mysql \
     && docker-php-ext-install -j$(nproc) bcmath \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install -j$(nproc) soap \
