@@ -6,8 +6,8 @@ RUN groupadd www-data && useradd -M -g www-data -s /sbin/nologin www-data \
 libjpeg-devel libpng libpng-devel freetype freetype-devel gmp gmp-devel readline readline-devel libxslt libxslt-devel \
 autoconf gcc bison re2c sqlite-devel libffi-devel icu-devel libicu.x86_64 libicu-devel.x86_64 libicu-doc.noarch \
 gcc-c++ oniguruma-devel.x86_64 oniguruma.x86_64 -y \
-&& mkdir /soft && cd /soft && wget https://github.com/php/php-src/archive/php-7.4.0alpha1.tar.gz \
-&& tar xvf  php-7.4.0alpha1.tar.gz && rm -rf php-7.4.0alpha1.tar.gz && cd php-src-php-7.4.0alpha1 \
+&& mkdir /soft && cd /soft && wget https://github.com/php/php-src/archive/php-7.4.0RC3.tar.gz \
+&& tar xvf php-7.4.0RC3.tar.gz && rm -rf php-7.4.0RC3.tar.gz && cd php-src-php-7.4.0RC3 \
 && ./buildconf --force \
 && ./configure \
 --prefix=/usr/local/php \
@@ -68,5 +68,5 @@ gcc-c++ oniguruma-devel.x86_64 oniguruma.x86_64 -y \
 && ln -s /usr/local/php/bin/php /usr/bin/php \
 && wget https://dl.laravel-china.org/composer.phar -O /usr/local/bin/composer \
 && chmod a+x /usr/local/bin/composer \
-&& composer config -g repo.packagist composer https://packagist.laravel-china.org \
+&& composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
 && yum clean all && rm -rf /tmp/* && rm -rf /soft
