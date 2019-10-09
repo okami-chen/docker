@@ -23,7 +23,7 @@ services:
           - /data/www:/www
           - ./php/conf.d/php.ini:/usr/local/etc/php/php.ini
           - ./php/conf.d/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
-        command: /opt/run.sh
+#        command: /opt/run.sh
         links:
             - redis
     redis:

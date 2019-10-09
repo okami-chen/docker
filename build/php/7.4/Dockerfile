@@ -10,11 +10,15 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
         libxslt1-dev libbz2-dev bison libffi-dev libzip-dev re2c apt-utils \
         libgtk2.0-dev cmake git unzip \
         supervisor \
-    && docker-php-ext-install -j$(nproc) mysqli pdo_mysql \
+    && docker-php-ext-install -j$(nproc) pdo mysqli pdo_mysql \
     && docker-php-ext-install -j$(nproc) bcmath \
     && docker-php-ext-install -j$(nproc) gd \
-    && pecl install redis swoole zip \
-    && docker-php-ext-enable redis swoole zip \
+    && docker-php-ext-install -j$(nproc) soap \
+    && docker-php-ext-install -j$(nproc) sockets \
+    && docker-php-ext-install -j$(nproc) xmlrpc \
+    && docker-php-ext-install -j$(nproc) zip \
+    && pecl install redis swoole \
+    && docker-php-ext-enable redis swoole \
     && wget https://getcomposer.org/composer.phar -O /usr/local/bin/composer \
     && chmod a+x /usr/local/bin/composer \
     && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
