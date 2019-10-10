@@ -2,14 +2,11 @@ FROM php:7.4.0RC3-fpm-buster
 COPY ./run.sh /opt/run.sh
 COPY ./sources.list /etc/apt/sources.list
 RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libpng-dev \
-        autoconf make zlib1g zlib1g-dev libtool wget libxml2-dev bzip2 libsodium-dev libedit-dev \
-        libsqlite3-dev libssl-dev libcurl4-openssl-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev \
-        libxslt1-dev libbz2-dev bison libffi-dev libzip-dev re2c apt-utils \
-        libgtk2.0-dev cmake git unzip \
-        supervisor \
+    libfreetype6-dev libjpeg62-turbo-dev libpng-dev autoconf make zlib1g zlib1g-dev \
+    libtool wget libxml2-dev bzip2 libsodium-dev libedit-dev libsqlite3-dev libssl-dev \
+    libcurl4-openssl-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libxslt1-dev \
+    libbz2-dev bison libffi-dev libzip-dev re2c apt-utils libgtk2.0-dev cmake git \
+    unzip supervisor \
     && docker-php-ext-install -j$(nproc) mysqli pdo_mysql \
     && docker-php-ext-install -j$(nproc) bcmath \
     && docker-php-ext-install -j$(nproc) gd \
