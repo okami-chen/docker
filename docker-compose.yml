@@ -1,29 +1,30 @@
 version: '2'
 services:
     nginx:
-
         container_name: nginx
         image: nginx:stable
         restart: always
         ports:
-            - 80:80
+            - 8080:80
         volumes:
           - ./nginx/logs:/var/log/nginx/
           - ./nginx/conf.d:/etc/nginx/conf.d
-          - /data/www:/www
+          - /www:/www
         links:
           - php
     php:
         container_name: php
         build: build/php/7.4
-#        image: sync402/php:7.4
         ports:
             - 19501:9501
         volumes:
-          - /data/www:/www
-          - ./php/conf.d/php.ini:/usr/local/etc/php/php.ini
-          - ./php/conf.d/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
-#        command: /opt/run.sh
+          - /www:/www
+          - ./addon/supervisord.d/:/etc/supervisor/conf.d/
+          - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
+          - ./addon/php/php.ini:/usr/local/etc/php/php.ini
+          - ./addon/bash/run.sh:/opt/run.sh
+        command: /opt/run.sh
+
         links:
             - redis
     redis:
@@ -32,7 +33,7 @@ services:
         image: redis:latest
         restart: always
         ports:
-            - 6379:6379
+            - 16379:6379
         volumes:
             - /data/lnmp/redis/data:/data
         command:
@@ -48,7 +49,7 @@ services:
         volumes:
             - /data/lnmp/mysql/data:/var/lib/mysql
         ports:
-            - 3306:3306
+            - 13306:3306
     phpmyadmin:
         image: phpmyadmin/phpmyadmin:latest
         container_name: phpmyadmin
