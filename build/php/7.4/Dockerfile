@@ -29,8 +29,8 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
     && docker-php-ext-install -j$(nproc) xmlrpc \
     && docker-php-ext-install -j$(nproc) zip \
     && docker-php-ext-install -j$(nproc) bz2 \
-    && pecl install redis swoole \
-    && docker-php-ext-enable redis swoole \
+    && pecl install redis swoole mongodb apcu \
+    && docker-php-ext-enable redis swoole mongodb apcu \
     && wget https://getcomposer.org/composer.phar -O /usr/local/bin/composer \
     && chmod a+x /usr/local/bin/composer \
     && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
