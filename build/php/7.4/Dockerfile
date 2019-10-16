@@ -10,6 +10,7 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
     libcurl4-openssl-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libxslt1-dev \
     libbz2-dev bison libffi-dev libzip-dev re2c apt-utils libgtk2.0-dev cmake git \
     unzip supervisor libsnmp-dev libtidy-dev libldap2-dev libc-client-dev libkrb5-dev libicu-dev \
+    librabbitmq-dev librabbitmq4 \
     && docker-php-ext-install -j$(nproc) intl \
     && docker-php-ext-install -j$(nproc) ldap \
     && docker-php-ext-install -j$(nproc) dba \
@@ -29,8 +30,8 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
     && docker-php-ext-install -j$(nproc) xmlrpc \
     && docker-php-ext-install -j$(nproc) zip \
     && docker-php-ext-install -j$(nproc) bz2 \
-    && pecl install redis swoole mongodb apcu \
-    && docker-php-ext-enable redis swoole mongodb apcu \
+    && pecl install redis swoole mongodb apcu amqp igbinary \
+    && docker-php-ext-enable redis swoole mongodb apcu amqp igbinary \
     && wget https://getcomposer.org/composer.phar -O /usr/local/bin/composer \
     && chmod a+x /usr/local/bin/composer \
     && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
