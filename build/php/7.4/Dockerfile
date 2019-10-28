@@ -1,4 +1,4 @@
-FROM php:7.4.0RC3-fpm-buster
+FROM php:7.4.0RC4-fpm
 COPY ./run.sh /opt/run.sh
 COPY ./sources.list /etc/apt/sources.list
 LABEL Author="Eward"
