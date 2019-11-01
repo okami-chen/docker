@@ -12,7 +12,8 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
     libbz2-dev bison libffi-dev libzip-dev re2c apt-utils libgtk2.0-dev cmake git \
     unzip supervisor libsnmp-dev libtidy-dev libldap2-dev libc-client-dev libkrb5-dev libicu-dev \
     librabbitmq-dev librabbitmq4 libreadline6-dev \
-    && docker-php-ext-install -j$(nproc) readline \
+    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+    && docker-php-ext-install -j$(nproc) imap \
     && docker-php-ext-install -j$(nproc) intl \
     && docker-php-ext-install -j$(nproc) ldap \
     && docker-php-ext-install -j$(nproc) dba \
@@ -37,5 +38,5 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
     && wget https://getcomposer.org/composer.phar -O /usr/local/bin/composer \
     && chmod a+x /usr/local/bin/composer \
     && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
-    && rm -rf /var/cache/apk/* /tmp/* /usr/share/man \
+    && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /var/lib/apt/lists/* \
     && apt-get clean && chmod +x /opt/run.sh
