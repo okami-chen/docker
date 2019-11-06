@@ -12,12 +12,6 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
     libbz2-dev bison libffi-dev libzip-dev re2c apt-utils libgtk2.0-dev cmake git \
     unzip supervisor libsnmp-dev libtidy-dev libldap2-dev libc-client-dev libkrb5-dev libicu-dev \
     librabbitmq-dev librabbitmq4 libreadline6-dev \
-    && cd /tmp \
-    && wget https://github.com/swoole/swoole-src/archive/master.tar.gz \
-    && tar zxvf master.tar.gz \
-    && mv swoole-src* swoole-src && cd swoole-src \
-    && phpize && ./configure --enable-openssl --enable-sockets --enable-mysqlnd \
-    && make && make install \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install -j$(nproc) imap \
     && docker-php-ext-install -j$(nproc) intl \
@@ -39,6 +33,12 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
     && docker-php-ext-install -j$(nproc) xmlrpc \
     && docker-php-ext-install -j$(nproc) zip \
     && docker-php-ext-install -j$(nproc) bz2 \
+    && cd /tmp \
+    && wget https://github.com/swoole/swoole-src/archive/master.tar.gz \
+    && tar zxvf master.tar.gz \
+    && mv swoole-src* swoole-src && cd swoole-src \
+    && phpize && ./configure --enable-openssl --enable-sockets --enable-mysqlnd \
+    && make && make install \
     && pecl install redis mongodb apcu amqp igbinary \
     && docker-php-ext-enable redis swoole mongodb apcu amqp igbinary \
     && wget https://getcomposer.org/composer.phar -O /usr/local/bin/composer \
