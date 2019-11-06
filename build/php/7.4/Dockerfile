@@ -33,7 +33,12 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
     && docker-php-ext-install -j$(nproc) xmlrpc \
     && docker-php-ext-install -j$(nproc) zip \
     && docker-php-ext-install -j$(nproc) bz2 \
-    && pecl install redis swoole mongodb apcu amqp igbinary \
+    && curl -o ./tmp/swoole.tar.gz https://github.com/swoole/swoole-src/archive/master.tar.gz -L \
+    && tar zxvf ./tmp/swoole.tar.gz \
+    && mv swoole-src* swoole-src && cd swoole-src \
+    && phpize && ./configure --enable-openssl --enable-sockets --enable-mysqlnd \
+    && make && make install && rm -rf ./tmp/swoole.tar.gz \
+    && pecl install redis mongodb apcu amqp igbinary \
     && docker-php-ext-enable redis swoole mongodb apcu amqp igbinary \
     && wget https://getcomposer.org/composer.phar -O /usr/local/bin/composer \
     && chmod a+x /usr/local/bin/composer \
