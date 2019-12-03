@@ -9,7 +9,7 @@ services:
         volumes:
           - ./nginx/logs:/var/log/nginx/
           - ./nginx/conf.d:/etc/nginx/conf.d
-          - /data/www:/www
+          - /data/www:/var/www/html
         links:
           - php
     php:
@@ -18,7 +18,7 @@ services:
         ports:
             - 9501:9501
         volumes:
-          - /data/www:/www
+          - /data/www:/var/www/html
           - ./addon/supervisord.d/:/etc/supervisor/conf.d/
           - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
           - ./addon/php/php.ini:/usr/local/etc/php/php.ini
@@ -63,3 +63,5 @@ services:
             MYSQL_PASSWORD: "1q2w3e4r"
             MYSQL_ROOT_PASSWORD: "1q2w3e4r"
             PMA_HOST: mysql
+            PMA_USER: "root"
+            PMA_PASSWORD: "1q2w3e4r"
