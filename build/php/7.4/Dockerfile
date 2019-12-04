@@ -11,9 +11,9 @@ RUN apt-get update --fix-missing && apt-get upgrade && apt-get install -y --no-i
     libcurl4-openssl-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libxslt1-dev \
     libbz2-dev bison libffi-dev libzip-dev re2c apt-utils libgtk2.0-dev cmake git \
     unzip supervisor libsnmp-dev libtidy-dev libldap2-dev libc-client-dev libkrb5-dev libicu-dev \
-    librabbitmq-dev librabbitmq4 libreadline6-dev \
-#    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-#    && docker-php-ext-install -j$(nproc) imap \
+    librabbitmq-dev librabbitmq4 libreadline6-dev cron vim\
+    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+    && docker-php-ext-install -j$(nproc) imap \
     && docker-php-ext-install -j$(nproc) intl \
     && docker-php-ext-install -j$(nproc) ldap \
     && docker-php-ext-install -j$(nproc) dba \
