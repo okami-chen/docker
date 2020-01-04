@@ -11,24 +11,9 @@ services:
             - ./nginx/conf.d:/etc/nginx/conf.d
             - /data/www:/var/www/html
         links:
-            - php71
             - php72
             - php73
             - php74
-    php71:
-        container_name: php71
-        build: build/php/7.1
-        ports:
-            - 9501:9501
-        volumes:
-            - /data/www:/var/www/html
-            - ./addon/supervisord.d/:/etc/supervisor/conf.d/
-            - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
-            - ./addon/php/php.ini:/usr/local/etc/php/php.ini
-            - ./addon/bash/run.sh:/opt/run.sh
-        command: /opt/run.sh
-        links:
-            - redis
     php72:
         container_name: php72
         build: build/php/7.2
