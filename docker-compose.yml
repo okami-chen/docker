@@ -31,8 +31,6 @@ services:
     php73:
         container_name: php73
         build: build/php/7.3
-        ports:
-            - 9501:9501
         volumes:
             - /data/www:/var/www/html
             - ./addon/supervisord.d/:/etc/supervisor/conf.d/
@@ -45,8 +43,6 @@ services:
     php74:
         container_name: php74
         build: build/php/7.4
-        ports:
-            - 9501:9501
         volumes:
             - /data/www:/var/www/html
             - ./addon/supervisord.d/:/etc/supervisor/conf.d/
