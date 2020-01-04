@@ -7,24 +7,65 @@ services:
         ports:
             - 80:80
         volumes:
-          - ./nginx/logs:/var/log/nginx/
-          - ./nginx/conf.d:/etc/nginx/conf.d
-          - /data/www:/var/www/html
+            - ./nginx/logs:/var/log/nginx/
+            - ./nginx/conf.d:/etc/nginx/conf.d
+            - /data/www:/var/www/html
         links:
-          - php
+            - php
+    php71:
+        container_name: php71
+        build: build/php/7.1
+        ports:
+            - 9501:9501
+        volumes:
+            - /data/www:/var/www/html
+            - ./addon/supervisord.d/:/etc/supervisor/conf.d/
+            - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
+            - ./addon/php/php.ini:/usr/local/etc/php/php.ini
+            - ./addon/bash/run.sh:/opt/run.sh
+        command: /opt/run.sh
+        links:
+            - redis
     php:
         container_name: php
+        build: build/php/7.2
+        ports:
+            - 9501:9501
+        volumes:
+            - /data/www:/var/www/html
+            - ./addon/supervisord.d/:/etc/supervisor/conf.d/
+            - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
+            - ./addon/php/php.ini:/usr/local/etc/php/php.ini
+            - ./addon/bash/run.sh:/opt/run.sh
+        command: /opt/run.sh
+        links:
+            - redis
+    php73:
+        container_name: php73
+        build: build/php/7.3
+        ports:
+            - 9501:9501
+        volumes:
+            - /data/www:/var/www/html
+            - ./addon/supervisord.d/:/etc/supervisor/conf.d/
+            - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
+            - ./addon/php/php.ini:/usr/local/etc/php/php.ini
+            - ./addon/bash/run.sh:/opt/run.sh
+        command: /opt/run.sh
+        links:
+            - redis
+    php74:
+        container_name: php74
         build: build/php/7.4
         ports:
             - 9501:9501
         volumes:
-          - /data/www:/var/www/html
-          - ./addon/supervisord.d/:/etc/supervisor/conf.d/
-          - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
-          - ./addon/php/php.ini:/usr/local/etc/php/php.ini
-          - ./addon/bash/run.sh:/opt/run.sh
+            - /data/www:/var/www/html
+            - ./addon/supervisord.d/:/etc/supervisor/conf.d/
+            - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
+            - ./addon/php/php.ini:/usr/local/etc/php/php.ini
+            - ./addon/bash/run.sh:/opt/run.sh
         command: /opt/run.sh
-
         links:
             - redis
     redis:
@@ -55,7 +96,7 @@ services:
         container_name: phpmyadmin
         restart: always
         ports:
-            - 8080:80
+            - 9080:80
         links:
             - mysql
         environment:
@@ -65,3 +106,30 @@ services:
             PMA_HOST: mysql
             PMA_USER: "root"
             PMA_PASSWORD: "1q2w3e4r"
+    consul:
+        image: consul
+        container_name: consul
+        command: agent -server -bootstrap-expect=1 -ui -bind=0.0.0.0 -client=0.0.0.0 -datacenter=dc1
+        volumes:
+            - /data/lnmp/consul/data:/consul/data
+            - /data/lnmp/consul/config:/consul/config
+        ports:
+            - 8500:8500
+    rabbitmq:
+        image: rabbitmq:management-alpine
+        container_name: rabbitmq
+        volumes:
+            - ./data/lnmp/rabbitmq:/var/lib/rabbitmq
+        environment:
+            - RABBITMQ_DEFAULT_VHOST=my_vhost
+            - RABBITMQ_DEFAULT_USER=admin
+            - RABBITMQ_DEFAULT_PASS=admin
+        restart: always
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "10"

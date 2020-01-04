@@ -1,5 +1,5 @@
 #FROM php:7.4.0RC4-fpm
-FROM php:7.4-fpm-buster
+FROM php:7.1-fpm-buster
 COPY ./run.sh /opt/run.sh
 COPY ./sources.list /etc/apt/sources.list
 LABEL Author="Eward"
@@ -11,7 +11,9 @@ RUN apt-get update --fix-missing && apt-get upgrade && apt-get install -y --no-i
     libcurl4-openssl-dev libjpeg-dev libpng-dev libxpm-dev libfreetype6-dev libxslt1-dev \
     libbz2-dev bison libffi-dev libzip-dev re2c apt-utils libgtk2.0-dev cmake git \
     unzip supervisor libsnmp-dev libtidy-dev libldap2-dev libc-client-dev libkrb5-dev libicu-dev \
-    librabbitmq-dev librabbitmq4 libreadline6-dev cron vim \
+    librabbitmq-dev librabbitmq4 libreadline6-dev cron vim\
+    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+    && docker-php-ext-install -j$(nproc) imap \
     && docker-php-ext-install -j$(nproc) intl \
     && docker-php-ext-install -j$(nproc) ldap \
     && docker-php-ext-install -j$(nproc) dba \

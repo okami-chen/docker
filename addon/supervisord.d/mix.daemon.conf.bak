@@ -6,4 +6,4 @@ autorestart=true
 user=root
 numprocs=1
 redirect_stderr=true
-stdout_logfile=/var/www/html/mix/storage/logs/queue.log
+stdout_logfile=/var/www/html/mix/storage/logs/daemon.log
