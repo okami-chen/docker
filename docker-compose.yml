@@ -11,7 +11,10 @@ services:
             - ./nginx/conf.d:/etc/nginx/conf.d
             - /data/www:/var/www/html
         links:
-            - php
+            - php71
+            - php72
+            - php73
+            - php74
     php71:
         container_name: php71
         build: build/php/7.1
@@ -26,8 +29,8 @@ services:
         command: /opt/run.sh
         links:
             - redis
-    php:
-        container_name: php
+    php72:
+        container_name: php72
         build: build/php/7.2
         ports:
             - 9501:9501
