@@ -42,7 +42,7 @@ RUN apt-get update -y --fix-missing && apt-get upgrade -y && apt-get -y install 
     && make && make install \
     && pecl install redis mongodb apcu amqp igbinary \
     && docker-php-ext-enable redis swoole mongodb apcu amqp igbinary \
-    && wget https://getcomposer.org/composer.phar -O /usr/local/bin/composer \
+    && wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer \
     && chmod a+x /usr/local/bin/composer \
     && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /var/lib/apt/lists/* \
