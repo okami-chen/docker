@@ -9,42 +9,16 @@ services:
         volumes:
             - ./nginx/logs:/var/log/nginx/
             - ./nginx/conf.d:/etc/nginx/conf.d
-            - /data/www:/var/www/html
+            - D:/docker/www:/var/www/html
         links:
-            - php72
-            - php73
             - php74
-    php72:
-        container_name: php72
-        build: build/php/7.2
-        ports:
-            - 9501:9501
-        volumes:
-            - /data/www:/var/www/html
-            - ./addon/supervisord.d/:/etc/supervisor/conf.d/
-            - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
-            - ./addon/php/php.ini:/usr/local/etc/php/php.ini
-            - ./addon/bash/run.sh:/opt/run.sh
-        command: /opt/run.sh
-        links:
-            - redis
-    php73:
-        container_name: php73
-        build: build/php/7.3
-        volumes:
-            - /data/www:/var/www/html
-            - ./addon/supervisord.d/:/etc/supervisor/conf.d/
-            - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
-            - ./addon/php/php.ini:/usr/local/etc/php/php.ini
-            - ./addon/bash/run.sh:/opt/run.sh
-        command: /opt/run.sh
-        links:
-            - redis
+
     php74:
         container_name: php74
-        build: build/php/7.4
+#        build: build/php/7.4
+        image: registry.cn-hangzhou.aliyuncs.com/okami/php:7.4.7
         volumes:
-            - /data/www:/var/www/html
+            - D:/docker/www:/var/www/html
             - ./addon/supervisord.d/:/etc/supervisor/conf.d/
             - ./addon/php/swoole.ini:/usr/local/etc/php/conf.d/swoole.ini
             - ./addon/php/php.ini:/usr/local/etc/php/php.ini
@@ -60,7 +34,7 @@ services:
         ports:
             - 6379:6379
         volumes:
-            - /data/lnmp/redis/data:/data
+            - D:/docker/data/redis/data:/data
         command:
             redis-server
     mysql:
@@ -72,7 +46,7 @@ services:
             MYSQL_USER: 'root'
             MYSQL_PASS: '1q2w3e4r'
         volumes:
-            - /data/lnmp/mysql/data:/var/lib/mysql
+            - D:/docker/data/mysql/data:/var/lib/mysql
         ports:
             - 3306:3306
     phpmyadmin:
@@ -95,15 +69,15 @@ services:
         container_name: consul
         command: agent -server -bootstrap-expect=1 -ui -bind=0.0.0.0 -client=0.0.0.0 -datacenter=dc1
         volumes:
-            - /data/lnmp/consul/data:/consul/data
-            - /data/lnmp/consul/config:/consul/config
+            - D:/docker/data/consul/data:/consul/data
+            - D:/docker/data/consul/config:/consul/config
         ports:
             - 8500:8500
     rabbitmq:
         image: rabbitmq:management-alpine
         container_name: rabbitmq
         volumes:
-            - ./data/lnmp/rabbitmq:/var/lib/rabbitmq
+            - D:/docker/data/rabbitmq:/var/lib/rabbitmq
         environment:
             - RABBITMQ_DEFAULT_VHOST=my_vhost
             - RABBITMQ_DEFAULT_USER=admin

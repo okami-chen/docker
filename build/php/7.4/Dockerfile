@@ -1,10 +1,9 @@
-#FROM php:7.4.0RC4-fpm
 FROM php:7.4-fpm-buster
 COPY ./run.sh /opt/run.sh
 COPY ./sources.list /etc/apt/sources.list
-LABEL Author="Eward"
+LABEL Author="Okami-Chen"
 LABEL Version="fpm-7.4"
-LABEL Description="PHP FPM 7.4 All extensions."
+LABEL Description="PHP FPM 7.4"
 RUN apt-get update -y --fix-missing && apt-get upgrade -y && apt-get -y install --no-install-recommends \
     libfreetype6-dev libjpeg62-turbo-dev libpng-dev autoconf make zlib1g zlib1g-dev \
     libtool wget libxml2-dev bzip2 libsodium-dev libedit-dev libsqlite3-dev libssl-dev \
@@ -38,9 +37,9 @@ RUN apt-get update -y --fix-missing && apt-get upgrade -y && apt-get -y install 
     && mv swoole-src* swoole-src && cd swoole-src \
     && phpize && ./configure --enable-openssl --enable-sockets --enable-mysqlnd \
     && make && make install \
-    && pecl install redis mongodb apcu amqp igbinary \
-    && docker-php-ext-enable redis swoole mongodb apcu amqp igbinary \
-    && wget https://getcomposer.org/composer-stable.phar -O /usr/local/bin/composer \
+    && pecl install redis apcu amqp igbinary \
+    && docker-php-ext-enable redis swoole apcu amqp igbinary \
+    && wget https://install.phpcomposer.com/composer.phar -O /usr/local/bin/composer \
     && chmod a+x /usr/local/bin/composer \
     && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man /var/lib/apt/lists/* \

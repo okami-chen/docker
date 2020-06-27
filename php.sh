@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker exec -it php72 bash
+docker exec -it php74 bash

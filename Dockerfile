@@ -17,7 +17,7 @@
 #&& make && make install \
 #&& rm -rf /var/cache /soft
 
-FROM php:7.4.0RC3-fpm-buster
+FROM php:7.4-fpm-buster
 RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -28,7 +28,7 @@ RUN apt-get update --fix-missing && apt-get install -y --no-install-recommends \
         libgtk2.0-dev cmake git unzip \
         supervisor \
     && docker-php-ext-install -j$(nproc) bcmath \
-#    && docker-php-ext-configure gd \
+    && docker-php-ext-configure gd \
     && docker-php-ext-install -j$(nproc) gd \
     && pecl install redis swoole zip \
     && docker-php-ext-enable redis swoole zip \
